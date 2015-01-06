@@ -136,7 +136,6 @@ handler.getOfflineMessage = function(msg,session,next){
 
 
 handler.getSession = function(msg,session,next) {
-
 	console.log("session "+session);
 	console.log("getSession");
 	var userid = session.get('uid');
