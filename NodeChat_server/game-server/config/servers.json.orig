@@ -1,15 +1,42 @@
 {
   "development":{
     "connector": [
+<<<<<<< HEAD
+    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true},
+    {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true}
+    ],
+
+    "test":[
+
+    {"id": "test-server", "host": "127.0.0.1", "port": 3152, "clientPort": 3012, "frontend": true}
+    
+    ] 
+  },
+  "production":{
+    "connector": [
+    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true},
+    {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true}
+    ],
+
+   "test":[
+    
+    {"id": "test-server", "host": "127.0.0.1", "port": 3152, "clientPort": 3012, "frontend": true}
+    
+    ] 
+
+  }
+
+
+  
+  
+=======
       {"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true},
       {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true}
     ],
     "gate":[
       {"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 3014, "frontend": true}
     ],
-
     "chat":[
-
       {"id":"chat-server-1","host":"127.0.0.1","port":3450}
     ]
   },
@@ -21,12 +48,9 @@
     "gate":[
       {"id": "gate-server-1", "host": "127.0.0.1", "clientPort": 3014, "frontend": true}
     ],
-
     "chat":[
-    
       {"id":"chat-server-1","host":"127.0.0.1","port":3450}
     ]
-    ] 
-
   }  
+>>>>>>> ac063f2c9a0763cdee6b095fbbc1a7f2ebe577ab
 }
