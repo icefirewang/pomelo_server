@@ -5,7 +5,8 @@ module.exports = {
 	gate:{
 		no_server_available :2001
 	},
-	sql:{
-		
+
+	chat:{
+		fail_to_get_channel: 3001
 	}
-}
+};

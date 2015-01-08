@@ -1,6 +1,3 @@
-
-
-
 module.exoprts = function(app){
 	return new ConnectorRemote(app);
 };
@@ -20,4 +17,8 @@ ConnectorRemote.prototype.isUserOnline = function(uid,cb){
 	}else{
 		cb(sessions[0]);
 	}
+};
+
+ConnectorRemote.prototype.test = function(uid,cb){
+	console.log('ConnectorRemote');
 };

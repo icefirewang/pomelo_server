@@ -5,6 +5,8 @@ var redis = require('redis'),
 client = redis.createClient(6379,'127.0.0.1');
 var msgHandler = require('./messageHandler');
 var chat = require('./chat');
+var async  =require('async');
+var code = require('../../common/code');
 
 //var logger = require('pomelo-logger').getLogger(__filename);
 var logger  = require('./logMgr');
@@ -26,13 +28,25 @@ var Handler = function(app) {
 
 var handler = Handler.prototype;
 
-
+handler.isUserExist = function(msg,session,next){
+	var uid = msg.uid;
+	var self = this;
+	// self.app.rpc.connector.connectorRemote.isUserOnline(session,uid,'connector-server-2',function(ret){
+	// 	console.log(ret);
+	// });
+	self.app.rpc.chat.chatRemote.getCount(session,'global',function(count){
+		console.log('count'+count);
+	});
+	//self.app.rpc.connector.connectorRemote.test(1,null);
+	//self.app.rpc.chat.chatRemote.test(uid,'chat-server-1',null);
+	//self.app.rpc.test.testRemote.test(uid,'test-server-1',null);
+}
 
 handler.login = function (msg,session,next) {
 		console.log("log--------------------------------");
 		var user = msg.user;
 		var password = msg.password;
-
+		var self = this;
 		var sql = "select * from users where account = ? AND password = ?";
 		var args = [user,password];
 		var sessionService = this.app.get('sessionService');
@@ -69,33 +83,38 @@ handler.login = function (msg,session,next) {
 				return;
 			}
 			
-			session.bind(uid);
-			session.set('uid',uid);
-			session.set('nick',nick);
-			session.set('avatar',avatar);
+			async.waterfall([
+				function(cb){
+						session.bind(uid);
+						session.set('uid',uid);
+						session.set('nick',nick);
+						session.set('avatar',avatar);
+						session.pushAll(cb);
+				},
+				function(cb){
+					console.log('rpc');
+					self.app.rpc.chat.chatRemote.add(session,uid,self.app.get('serverId'),'global',cb);
+				},
+				function(err){
+					if(err){
+						next(err,{status:code.fail});
+						return;
+					}else{
+							var userInfo = {
+								nick:nick,
+								uid:uid,
+								avatar:avatar
+							};
+							ret = {
+								status : status,
+								userInfo : userInfo
+							};
 
-
-			session.pushAll(function(err) {
-				if(err) {
-					logger.setLog(__filename,'login','sys',err.message);
-					//logger.error('set rid for session service failed! error is : %j', err.stack);
-					var errorCode = error.code('er_session_push');
-					next(null,{status:errorCode});
-					return;
+							next(null,ret);
+									
+					}
 				}
-			});
-
-			var userInfo = {
-				nick:nick,
-				uid:uid,
-				avatar:avatar
-			};
-			ret = {
-				status : status,
-				userInfo : userInfo
-			};
-
-			next(null,ret);
+				])
 		});	
 };
 

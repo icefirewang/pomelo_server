@@ -1,4 +1,4 @@
-var dispatcher = require('../../../../utils/dispatch');
+var dispatcher = require('../../../utils/dispatch');
 var code = require('../../common/code');
 
 module.exports = function(app){
@@ -23,6 +23,6 @@ Handler.prototype.queryEntry = function(msg,session,next){
 		next(null,{status:code.gate.no_server_available});
 		return;
 	}
-	var res = dispatch.dispatch(userid,connectors);
-	next(null, {status: Code.OK, host: res.host, port: res.clientPort});
+	var res = dispatcher.dispatch(userid,connectors);
+	next(null, {status: code.OK, host: res.host, port: res.clientPort});
 };
